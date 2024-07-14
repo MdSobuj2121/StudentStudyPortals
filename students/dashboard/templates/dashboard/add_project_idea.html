@@ -1,0 +1,14 @@
+<!-- add_project_idea.html -->
+{% extends 'dashboard/base.html' %}
+{% load crispy_forms_tags %}  <!-- Load crispy_forms_tags to use crispy forms -->
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Add Project Idea</h1>
+    <form method="post" class="form">
+        {% csrf_token %}
+        {{ form|crispy }}  <!-- Render the form using crispy_forms_tags -->
+        <button type="submit" class="btn btn-primary">Add Idea</button>
+    </form>
+</div>
+{% endblock %}

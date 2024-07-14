@@ -1,0 +1,79 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Syllabus & Routine</h1>
+    <p>Using Syllabus & Routine you can add two (Syllabus, Routine) PDF files and also see those files.</p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">Add Syllabus</div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" action="{% url 'add_syllabus' %}">
+                        {% csrf_token %}
+                        {{ syllabus_form.as_p }}
+                        <button type="submit" class="btn btn-primary">Add Syllabus</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">Add Routine</div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" action="{% url 'add_routine' %}">
+                        {% csrf_token %}
+                        {{ routine_form.as_p }}
+                        <button type="submit" class="btn btn-primary">Add Routine</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="mb-3">Syllabuses</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>File</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for syllabus in syllabuses %}
+            <tr>
+                <td>{{ syllabus.description }}</td>
+                <td><a href="{{ syllabus.file.url }}" target="_blank">View File</a></td>
+                <td>
+                    <a href="{% url 'delete_syllabus' syllabus.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 class="mb-3">Routines</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>File</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for routine in routines %}
+            <tr>
+                <td>{{ routine.description }}</td>
+                <td><a href="{{ routine.file.url }}" target="_blank">View File</a></td>
+                <td>
+                    <a href="{% url 'delete_routine' routine.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

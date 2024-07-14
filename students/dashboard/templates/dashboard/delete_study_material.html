@@ -1,0 +1,11 @@
+<!-- delete_study_material.html -->
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<h1>Delete Study Material</h1>
+<p>Are you sure you want to delete "{{ study_material.name }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{% url 'study_materials_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

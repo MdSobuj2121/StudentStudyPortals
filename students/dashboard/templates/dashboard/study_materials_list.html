@@ -1,0 +1,13 @@
+<!-- study_materials_list.html -->
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<h1>Study Materials</h1>
+<ul>
+    {% for material in study_materials %}
+    <li>{{ material.name }} - <a href="{{ material.file.url }}">Download</a> | <a href="{% url 'delete_study_material' material.pk %}">Delete</a></li>
+    {% empty %}
+    <li>No study materials found.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'add_study_material' %}" class="btn btn-primary">Add Study Material</a>
+{% endblock %}

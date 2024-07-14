@@ -1,0 +1,93 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">CGPA Calculator</h1>
+        
+        <!-- Add New Semester Form -->
+        <div class="card mb-4">
+            <div class="card-header">Add New Semester</div>
+            <div class="card-body">
+                <form method="post" action="{% url 'cgpa_view' %}">
+                    {% csrf_token %}
+                    {{ semester_form.as_p }}
+                    <input type="hidden" name="add_semester" value="true">
+                    <button type="submit" class="btn btn-primary">Add Semester</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add New Subject Form -->
+        <div class="card mb-4">
+            <div class="card-header">Add New Subject</div>
+            <div class="card-body">
+                <form method="post" action="{% url 'cgpa_view' %}">
+                    {% csrf_token %}
+                    {{ subject_form.as_p }}
+                    <input type="hidden" name="add_subject" value="true">
+                    <button type="submit" class="btn btn-primary">Add Subject</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Reset Button -->
+        <div class="card mb-4">
+            <div class="card-header">Reset Data</div>
+            <div class="card-body">
+                <form method="post" action="{% url 'cgpa_view' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="reset_data" value="true">
+                    <button type="submit" class="btn btn-danger">Reset All Data</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Subjects Table -->
+        <h2 class="mb-3">Subjects</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Subject Name</th>
+                    <th>Grade</th>
+                    <th>Credit Hours</th>
+                    <th>Semester</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subject in all_subjects %}
+                <tr>
+                    <td>{{ subject.name }}</td>
+                    <td>{{ subject.grade }}</td>
+                    <td>{{ subject.credit_hours }}</td>
+                    <td>{{ subject.semester.number }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- GPA and CGPA Display -->
+        {% for semester in semesters %}
+        <h3>Semester {{ semester.number }} GPA: {{ semester.gpa|floatformat:2 }}</h3>
+        {% endfor %}
+        <h2>Overall CGPA: {{ cgpa|floatformat:2 }}</h2>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+{% endblock %}
+``

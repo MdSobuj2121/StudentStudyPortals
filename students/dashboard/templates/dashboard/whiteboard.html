@@ -1,0 +1,95 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    #whiteboard-container {
+        max-width: 800px;
+        margin: 20px auto; /* Adjusted margin for centering */
+        padding: 20px;
+        border: 4px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        overflow: auto; /* Allow scrolling */
+        max-height: 600px; /* Maximum height before scrolling */
+    }
+
+    #whiteboard {
+        border: 1px solid #000;
+        cursor: crosshair;
+        width: 100%; /* Full width within container */
+        max-width: 100%;
+        height: auto; /* Allows canvas to resize proportionally */
+    }
+
+    .controls {
+        margin-top: 20px;
+        text-align: center; /* Center align buttons */
+    }
+
+    .btn {
+        margin-top: 10px; /* Adjusted margin for buttons */
+        margin-right: 10px;
+    }
+</style>
+
+<div class="container mt-5">
+    <div id="whiteboard-container">
+        <h1 class="mb-4"><b>WHITEBOARD</b></h1>
+        <canvas id="whiteboard" width="800" height="600"></canvas>
+    </div>
+    
+    <div class="controls mt-3">
+        <button class="btn btn-primary" onclick="clearBoard()">Clear</button>
+        <button class="btn btn-success" onclick="saveBoard()">Save</button>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('whiteboard');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mousemove', draw);
+
+    function startDrawing(e) {
+        drawing = true;
+        draw(e);
+    }
+
+    function stopDrawing() {
+        drawing = false;
+        ctx.beginPath();
+    }
+
+    function draw(e) {
+        if (!drawing) return;
+        ctx.lineWidth = 5;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = 'black';
+
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+    }
+
+    function clearBoard() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function saveBoard() {
+        const dataURL = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'whiteboard.png';
+        link.click();
+    }
+</script>
+{% endblock %}

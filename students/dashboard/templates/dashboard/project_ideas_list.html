@@ -1,0 +1,13 @@
+<!-- project_ideas_list.html -->
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<h1>Project Ideas</h1>
+<ul>
+    {% for idea in project_ideas %}
+    <li>{{ idea.title }} - {{ idea.description }} | <a href="{% url 'delete_project_idea' idea.pk %}" class="btn btn-danger">Delete</a></li>
+    {% empty %}
+    <li>No project ideas found.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'add_project_idea' %}" class="btn btn-primary">Add Project Idea</a>
+{% endblock %}
