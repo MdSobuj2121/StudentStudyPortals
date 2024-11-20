@@ -287,7 +287,7 @@ def conversion(request):
                 'answer':answer
             }
         else:
-           if request.POST['measurement'] == 'mass':
+          if request.POST['measurement'] == 'mass':
             measurement_form = ConversionMassForm()
             context = {
                 'form':form,
