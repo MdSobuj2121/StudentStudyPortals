@@ -259,7 +259,7 @@ def wiki(request):
             'form': form
         }
     return render(request, 'dashboard/wiki.html', context)
-@login_required
+
 def conversion(request):
     if request.method == 'POST':
         form = ConversionForm(request.POST)
@@ -378,7 +378,7 @@ def calculate_gpa(subjects):
         total_credits += subject.credit_hours
     
     return total_points / total_credits if total_credits > 0 else 0
-
+@login_required
 def cgpa_view(request):
     semesters = Semester.objects.all()
     all_subjects = Subject.objects.all()
@@ -425,7 +425,7 @@ def cgpa_view(request):
     }
 
     return render(request, 'dashboard/cgpa.html', context)
-
+@login_required
 def syllabus_routine_view(request):
     syllabuses = Syllabus.objects.all()
     routines = Routine.objects.all()
@@ -478,7 +478,7 @@ class RoutineDeleteView(DeleteView):
 def whiteboard_view(request):
     return render(request, 'dashboard/whiteboard.html')
 
-
+@login_required
 def study_materials_list(request):
     study_materials = StudyMaterial.objects.all()
     return render(request, 'dashboard/study_materials_list.html', {'study_materials': study_materials})
@@ -499,7 +499,7 @@ def delete_study_material(request, pk):
         study_material.delete()
         return redirect('study_materials_list')
     return render(request, 'dashboard/delete_study_material.html', {'study_material': study_material})
-
+@login_required
 def project_ideas_list(request):
     project_ideas = ProjectIdea.objects.all()
     return render(request, 'dashboard/project_ideas_list.html', {'project_ideas': project_ideas})
